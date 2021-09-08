@@ -1,12 +1,16 @@
 const express = require("express");
-const path = require("path");
+const compression = require("compression");
 const http = require("http");
-const socket = require("socket.io");
-const port = process.env.PORT || 3000; // default port: 3000
+const { Server } = require("socket.io");
 
+const port = process.env.PORT || 3000; // default port: 3000
 const app = express();
 const server = http.createServer(app); // use express to handle http server
-const io = socket(server);
+const io = new Server(server);
+app.use(compression());
+app.get("/", (req, res) => {
+  res.send("<h1>Hello world</h1>");
+});
 
 const onConnection = (socket) => {
   console.log("Socket.io init success");
