@@ -6,7 +6,14 @@ const { Server } = require("socket.io");
 const port = process.env.PORT || 3000; // default port: 3000
 const app = express();
 const server = http.createServer(app); // use express to handle http server
-const io = new Server(server);
+const io = new Server(server, {
+  allowEIO3: true, // 客户端版本为2.x添加改属性
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 app.use(compression());
 app.get("/", (req, res) => {
   res.send("<h1>Hello world</h1>");
